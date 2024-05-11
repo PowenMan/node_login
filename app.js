@@ -64,7 +64,22 @@ app.post('/login', async (req, res) => {
     const { email, contraseña } = req.body;
 
     db.query('SELECT * FROM usuarios WHERE email = ?', [email], async (err, result) => {
-
+        if(err){
+            console.log(err);
+            res.send('Error al iniciar sesión');
+        } else {
+            if(result.length > 0) {
+                const usuario = result[0];
+                if(await bcrypt.compare(contraseña, usuario.contraseña)){
+                    req.session.usuario = usuario;
+                    res.send('Inicio de sesión exitoso');
+                } else {
+                    res.send('Credenciales incorrectas');
+                }
+            } else {
+                res.send('Usuario no encontrado');
+            }
+        }
     });
 });
 
