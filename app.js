@@ -60,6 +60,7 @@ app.post('/registro', async (req, res) => {
     });
 });
 
+//Ruta de inicio de sesión
 app.post('/login', async (req, res) => {
     const { email, contraseña } = req.body;
 
